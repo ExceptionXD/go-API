@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -12,6 +12,12 @@ import (
 )
 
 func main() {
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/getBooks", controller.AllBooks).Methods("GET")
 	router.HandleFunc("/getBook/{id}", controller.FindBook).Methods("GET")
@@ -19,6 +25,5 @@ func main() {
 	router.HandleFunc("/updateBook/{id}", controller.UpdateBook).Methods("PUT")
 	router.HandleFunc("/deleteBook/{id}", controller.DeleteBook).Methods("DELETE")
 
-	fmt.Println("Connected to port http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
