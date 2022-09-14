@@ -4,21 +4,21 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+
+	"mysql-crud/controller"
 )
 
-func sendHello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World")
-}
-
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "5000"
-	}
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", sendHello).Methods("GET")
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	router.HandleFunc("/getBooks", controller.AllBooks).Methods("GET")
+	router.HandleFunc("/getBook/{id}", controller.FindBook).Methods("GET")
+	router.HandleFunc("/addBook", controller.AddBook).Methods("POST")
+	router.HandleFunc("/updateBook/{id}", controller.UpdateBook).Methods("PUT")
+	router.HandleFunc("/deleteBook/{id}", controller.DeleteBook).Methods("DELETE")
+
+	fmt.Println("Connected to port http://localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
