@@ -12,6 +12,10 @@ import (
 )
 
 func AddUser(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	var newbook model.User
 	var response model.Response
 	var apiResponse []model.User
@@ -49,6 +53,10 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
 	var user model.User
 	var response model.Response
 	var apiResponse []model.User
