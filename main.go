@@ -6,6 +6,8 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"mysql-crud/controller"
@@ -29,5 +31,5 @@ func main() {
 	// router.HandleFunc("/updateBook/{id}", controller.UpdateBook).Methods("PUT")
 	// router.HandleFunc("/deleteBook/{id}", controller.DeleteBook).Methods("DELETE")
 
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS()(router)))
 }
