@@ -13,6 +13,11 @@ import (
 
 func AddUser(w http.ResponseWriter, r *http.Request) {
 
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	var newbook model.User
 	var response model.Response
 	var apiResponse []model.User
@@ -50,6 +55,11 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 
 	var user model.User
 	var response model.Response
