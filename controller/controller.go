@@ -13,7 +13,7 @@ import (
 
 func AddUser(w http.ResponseWriter, r *http.Request) {
 
-	var newbook model.User
+	var newUser model.User
 	var response model.Response
 	var apiResponse []model.User
 
@@ -21,10 +21,10 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	config.Connect()
 
-	json.NewDecoder(r.Body).Decode(&newbook)
-	fmt.Println(newbook)
+	json.NewDecoder(r.Body).Decode(&newUser)
+	fmt.Println(newUser)
 
-	rows, err := db.Query("Insert into Users(name, email , password,id) values(?, ?, ?, ?)", &newbook.Name, &newbook.Email, &newbook.Password, &newbook.Id)
+	rows, err := db.Query("Insert into Users(name, email , password,id) values(?, ?, ?, ?)", &newUser.Name, &newUser.Email, &newUser.Password, &newUser.Id)
 	if err != nil {
 		log.Print(err)
 	}
@@ -32,11 +32,11 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(rows)
 
 	for rows.Next() {
-		err = rows.Scan(&newbook.Name, &newbook.Email, &newbook.Password, &newbook.Id)
+		err = rows.Scan(&newUser.Name, &newUser.Email, &newUser.Password, &newUser.Id)
 		if err != nil {
 			log.Fatal(err.Error())
 		} else {
-			apiResponse = append(apiResponse, newbook)
+			apiResponse = append(apiResponse, newUser)
 		}
 	}
 

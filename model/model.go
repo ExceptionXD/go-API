@@ -4,7 +4,7 @@ type User struct {
 	Name     string `form:"name" json:"name"`
 	Email    string `form:"email" json:"email"`
 	Password string `form:"password" json:"password"`
-	Id       string `form: "id"	json:"id"`
+	Id       string `form:"id" json:"id"`
 }
 
 type Response struct {

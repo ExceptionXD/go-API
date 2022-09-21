@@ -22,16 +22,18 @@ func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/addUser", controller.AddUser).Methods("POST")
-	router.HandleFunc("/getUser/{email}", controller.GetUser).Methods("GET")
+	router.HandleFunc("/addUser", controller.AddUser).Methods("POST", "OPTIONS")
+	router.HandleFunc("/getUser/{email}", controller.GetUser).Methods("GET", "OPTIONS")
 
-	handler := cors.Default().Handler(router)
+	c := cors.New(cors.Options{
+		AllowedMethods:     []string{"GET", "POST", "OPTIONS"},
+		AllowedOrigins:     []string{"*"},
+		AllowCredentials:   true,
+		AllowedHeaders:     []string{"Content-Type", "Bearer", "Bearer ", "content-type", "Origin", "Accept"},
+		OptionsPassthrough: true,
+	})
 
-	// router.HandleFunc("/getBooks", controller.AllBooks).Methods("GET")
-	// router.HandleFunc("/getBook/{id}", controller.FindBook).Methods("GET")
-	// router.HandleFunc("/addBook", controller.AddBook).Methods("POST")
-	// router.HandleFunc("/updateBook/{id}", controller.UpdateBook).Methods("PUT")
-	// router.HandleFunc("/deleteBook/{id}", controller.DeleteBook).Methods("DELETE")
+	handler := c.Handler(router)
 
 	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
